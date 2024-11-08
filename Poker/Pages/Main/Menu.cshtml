@@ -1,0 +1,27 @@
+﻿@page
+@model Poker.Pages.Main.MenuModel
+@{
+    ViewData["Title"] = "PlayRoom";
+}
+
+@inject Poker.Data.CardService CardService
+
+<div class="start">
+    <form method="post">
+        <button type="submit">Start Game</button>
+    </form>
+</div>
+
+<div class="image">
+    <div class="game-board" id="gameBoard">
+        <img src="~/Pictures/pokerTable.png" alt="Poker Table" />
+        @if (Model.Cards != null && Model.Cards.Count > 0)
+        {
+            @foreach (var card in Model.Cards)
+            {
+                <img src="/Pictures/@card" class="card @Model.GetCardPositionClass(card)" />
+                <img src="/Pictures/@card" class="card @Model.GetBackCardPositionClass(card)" />
+            }
+        }
+    </div>
+</div>
