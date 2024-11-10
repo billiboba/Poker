@@ -28,7 +28,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 15vh;
+    height: 8vh;
 }
 
 button {
@@ -50,7 +50,7 @@ button {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 20px;
+    margin-top: 0px;
 }
 
 .game-board {
@@ -58,7 +58,7 @@ button {
     width: 100%; /* Занимает всю доступную ширину */
     max-width: 1700px; /* Ограничение максимальной ширины */
     height: auto;
-    aspect-ratio: 14 / 8; /* Поддержка соотношения сторон */
+    aspect-ratio: 14 / 7; /* Поддержка соотношения сторон */
     background-image: url('/Pictures/pokerTable.png');
     background-size: contain;
     background-position: center;
@@ -80,37 +80,31 @@ button {
     border-radius: 7px;
 }
 .card-position-0 {
-    top: 77%;
+    top: 73%;
     left: 27%;
 }
 
 .card-position-1 {
-    top: 77%;
+    top: 73%;
     left: 33%;
 }
-
-/*.card-position-2 {
-    top:37%;
-    left: 39%;
-}*/
-
-.backCard-position-3 {
-    top: 40%;
-    left: 45%;
-}
-.backCard-position-4 {
-    top: 40%;
-    left: 55%;
-}
-.backCard-position-5 {
-    top: 40%;
+.backCard-position-0 {
+    top: 41%;
     left: 35%;
 }
-.backCard-position-6 {
-    top: 40%;
-    left: 15%;
+.backCard-position-1 {
+    top: 41%;
+    left: 41%;
 }
-.backCard-position-7 {
-    top: 40%;
-    left: 25%;
+.backCard-position-2 {
+    top: 41%;
+    left: 47%;
+}
+.backCard-position-3 {
+    top: 41%;
+    left: 53%;
+}
+.backCard-position-4 {
+    top: 41%;
+    left: 59%;
 }

@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Poker.Data;
 
-namespace Poker.Pages.Main
+namespace Poker.Models
 {
     public class MenuModel : PageModel
     {
@@ -21,22 +21,27 @@ namespace Poker.Pages.Main
         public void OnGet()
         {
             Cards = new List<string>();
+            BackCards = new List<string>();
         }
 
         public void OnPost()
         {
             Cards = _cardService.GetRandomCards(2).ToList();
-            BackCards = _cardService.GetRandomBackCards(1).ToList();
+            BackCards = _cardService.GetRandomBackCards(3).ToList();
         }
         public string GetCardPositionClass(string card)
         {
             var index = Cards.IndexOf(card);
             return $"card-position-{index}";
         }
-        public string GetBackCardPositionClass(string card)
+        public string GetBackCardPositionClass(string card, int position)
         {
-            var index = BackCards.IndexOf(card);
-            return $"backCard-position-{index}";
+            return $"backCard-position-{position}";
         }
+        //public string GetBackCardPositionClass(string card)
+        //{
+        //    var index = BackCards.IndexOf(card);
+        //    return $"backCard-position-{index}";
+        //}
     }
 }

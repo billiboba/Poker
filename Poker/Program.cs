@@ -18,5 +18,5 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.MapRazorPages();
-
+app.MapGet("/", () => Results.Redirect("Main/Menu"));
 app.Run();

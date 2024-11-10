@@ -1,5 +1,6 @@
 ﻿@page
-@model Poker.Pages.Main.MenuModel
+@using Poker.Models
+@model MenuModel
 @{
     ViewData["Title"] = "PlayRoom";
 }
@@ -20,8 +21,15 @@
             @foreach (var card in Model.Cards)
             {
                 <img src="/Pictures/@card" class="card @Model.GetCardPositionClass(card)" />
-                <img src="/Pictures/@card" class="card @Model.GetBackCardPositionClass(card)" />
             }
+        }
+        @if (Model.BackCards != null && Model.BackCards.Count > 0)
+        {
+            @for (int i = 0; i < Model.BackCards.Count; i++)
+            {
+                <img src="~/Pictures/@Model.BackCards[i]" class="card @Model.GetBackCardPositionClass(Model.BackCards[i], i)" />
+            }
+        }
         }
     </div>
 </div>
