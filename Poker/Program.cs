@@ -1,9 +1,12 @@
+using Microsoft.EntityFrameworkCore;
 using Poker.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddRazorPages();
-builder.Services.AddSingleton<CardService>(); 
+builder.Services.AddControllersWithViews();
+builder.Services.AddSingleton<CardService>();
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
 
@@ -17,6 +20,10 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
-app.MapRazorPages();
-app.MapGet("/", () => Results.Redirect("Main/Menu"));
+app.UseAuthorization();
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+
 app.Run();
