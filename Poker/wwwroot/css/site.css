@@ -61,11 +61,52 @@ body {
     top: 69%;
     left: 27%;
 }
-
 .card-position-1 {
     top: 69%;
     left: 33%;
 }
+.card-position-2 {
+    top: 39%;
+    left: 10%;
+}
+.card-position-3 {
+    top: 39%;
+    left: 4%;
+}
+.card-position-4 {
+    top: 8%;
+    left: 27%;
+}
+.card-position-5 {
+    top: 8%;
+    left: 33%;
+}
+.card-position-6 {
+    top: 8%;
+    left: 62%;
+}
+.card-position-7 {
+    top: 8%;
+    left: 68%;
+}
+.card-position-8 {
+    top: 39%;
+    left: 90%;
+}
+.card-position-9 {
+    top: 39%;
+    left: 84%;
+}
+.card-position-10 {
+    top: 69%;
+    left:62%;
+}
+.card-position-11 {
+    top: 69%;
+    left: 68%;
+}
+
+
 .backCard-position-0 {
     top: 39%;
     left: 35%;

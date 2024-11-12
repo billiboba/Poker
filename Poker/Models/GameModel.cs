@@ -2,9 +2,10 @@
 {
     public class GameModel
     {
-        public List<string> Cards { get; set; }
-        public List<string> BackCards { get; set; }
-        public UserModel Player { get; set; }
+        public List<string> Cards { get; set; } 
+        public List<string> BackCards { get; set; } 
+        public UserModel Player { get; set; } 
+        public int PlayerCount { get; set; } 
 
         public GameModel()
         {
@@ -13,10 +14,9 @@
             Player = new UserModel();
         }
 
-        public string GetCardPositionClass(string card)
+        public string GetCardPositionClass(string card, int position)
         {
-            var index = Cards.IndexOf(card);
-            return $"card-position-{index}";
+            return $"card-position-{position}";
         }
 
         public string GetBackCardPositionClass(string card, int position)
