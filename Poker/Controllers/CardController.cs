@@ -20,9 +20,9 @@ namespace Poker.Controllers
 
             if (isGameStarted)
             {
-                model.Cards = _cardService.GetRandomCards(2).ToList();
+                TempData["ShuffledCards"] = _cardService.GetShuffledEncryptedCards();
                 model.BackCards = _cardService.GetRandomBackCards(5).ToList();
-                model.Player = new UserModel { Id = 1, Username = "cos1nys", Balance = 1000 };
+                model.Cards = Enumerable.Repeat("BackCard.jpg", 2).ToList();
             }
 
             return View(model);
@@ -37,16 +37,71 @@ namespace Poker.Controllers
                 return RedirectToAction("Game", new { isGameStarted = false });
             }
 
+            TempData["PlayerCount"] = playerCount;
+
             var model = new GameModel
             {
-                Cards = _cardService.GetRandomCards(playerCount * 2).ToList(), 
+                Cards = _cardService.GetRandomCards(playerCount * 2).ToList(),
                 BackCards = _cardService.GetRandomBackCards(5).ToList(),
-                Player = new UserModel { Id = 1, Username = "cos1nys", Balance = 1000 },
+                Player = new UserModel
+                {
+                    Username = TempData.Peek("Username")?.ToString() ?? "Unknown",
+                    Balance = TempData.Peek("Balance") != null
+                        ? Convert.ToDouble(TempData.Peek("Balance"))
+                        : 1000
+                },
                 PlayerCount = playerCount
             };
 
             return View("Game", model);
         }
+
+        [HttpPost]
+        public IActionResult RevealCards()
+        {
+            var encryptedCards = TempData["ShuffledCards"] as List<string>;
+            var revealedCards = encryptedCards?.Take(2).Select(card => _cardService.DecryptCard(card, 0)).ToList();
+
+            var model = new GameModel
+            {
+                Cards = revealedCards ?? new List<string>(),
+                BackCards = _cardService.GetRandomBackCards(5).ToList(),
+                PlayerCount = (int)(TempData["PlayerCount"] ?? 0)
+            };
+
+            return View("Game", model);
+        }
+
+
+        //[HttpPost]
+        //public IActionResult StartGame(int playerCount)
+        //{
+        //    if (playerCount < 2 || playerCount > 10)
+        //    {
+        //        TempData["ErrorMessage"] = "Please enter a valid number of players (2-10).";
+        //        return RedirectToAction("Game", new { isGameStarted = false });
+        //    }
+
+        //    var username = TempData.Peek("Username")?.ToString() ?? HttpContext.Session.GetString("Username") ?? "Unknown";
+        //    var balance = TempData.Peek("Balance") != null
+        //        ? Convert.ToDouble(TempData.Peek("Balance"))
+        //        : HttpContext.Session.GetInt32("Balance") ?? 1000;
+
+        //    var model = new GameModel
+        //    {
+        //        Cards = _cardService.GetRandomCards(playerCount * 2).ToList(),
+        //        BackCards = _cardService.GetRandomBackCards(5).ToList(),
+        //        Player = new UserModel
+        //        {
+        //            Username = username,
+        //            Balance = balance
+        //        },
+        //        PlayerCount = playerCount
+        //    };
+
+        //    return View("Game", model);
+        //}
+
 
         public IActionResult Fold()
         {
