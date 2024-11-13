@@ -49,7 +49,7 @@ namespace Poker.Controllers
 
             return View(model);
         }
-        
+
 
         [HttpPost]
         public IActionResult Login(string Username, string Password)
@@ -59,6 +59,10 @@ namespace Poker.Controllers
 
             if (user != null)
             {
+                TempData["Username"] = user.Username;
+                TempData["Balance"] = user.Balance.ToString();  
+                TempData["UserId"] = user.Id; 
+
                 TempData["SuccessMessage"] = "Login successful!";
                 return RedirectToAction("Game", "Poker");
             }
@@ -66,6 +70,9 @@ namespace Poker.Controllers
             ModelState.AddModelError("", "Неверное имя пользователя или пароль.");
             return View("Register");
         }
+
+
+
 
         private string HashPassword(string password)
         {

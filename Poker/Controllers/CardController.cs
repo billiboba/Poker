@@ -18,15 +18,22 @@ namespace Poker.Controllers
         {
             var model = new GameModel();
 
+            var username = TempData.Peek("Username")?.ToString() ?? "Unknown";
+            var balanceString = TempData.Peek("Balance")?.ToString();
+            var balance = double.TryParse(balanceString, out var result) ? result : 1000;
+            var userId = (int?)TempData.Peek("UserId") ?? 0;
+
             if (isGameStarted)
             {
                 model.Cards = _cardService.GetRandomCards(2).ToList();
                 model.BackCards = _cardService.GetRandomBackCards(5).ToList();
-                model.Player = new UserModel { Id = 1, Username = "cos1nys", Balance = 1000 };
+                model.Player = new UserModel { Username = username, Balance = balance, Id = userId };
             }
 
             return View(model);
         }
+
+
 
         [HttpPost]
         public IActionResult StartGame(int playerCount)
@@ -37,16 +44,27 @@ namespace Poker.Controllers
                 return RedirectToAction("Game", new { isGameStarted = false });
             }
 
+            var username = TempData.Peek("Username")?.ToString() ?? "Unknown";
+            var balanceString = TempData.Peek("Balance")?.ToString();
+            var balance = double.TryParse(balanceString, out var result) ? result : 1000;
+            var userId = (int?)TempData.Peek("UserId") ?? 0; 
+
             var model = new GameModel
             {
-                Cards = _cardService.GetRandomCards(playerCount * 2).ToList(), 
+                Cards = _cardService.GetRandomCards(playerCount * 2).ToList(),
                 BackCards = _cardService.GetRandomBackCards(5).ToList(),
-                Player = new UserModel { Id = 1, Username = "cos1nys", Balance = 1000 },
+                Player = new UserModel
+                {
+                    Username = username,
+                    Balance = balance,
+                    Id = userId 
+                },
                 PlayerCount = playerCount
             };
-
             return View("Game", model);
         }
+
+
 
         public IActionResult Fold()
         {
