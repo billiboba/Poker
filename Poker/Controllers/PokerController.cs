@@ -14,26 +14,37 @@ namespace Poker.Controllers
             _cardService = cardService;
         }
 
-        public IActionResult Game(bool isGameStarted = false)
+        private (string username, double balance, int userId) GetUserData()
         {
-            var model = new GameModel();
-
             var username = TempData.Peek("Username")?.ToString() ?? "Unknown";
             var balanceString = TempData.Peek("Balance")?.ToString();
             var balance = double.TryParse(balanceString, out var result) ? result : 1000;
             var userId = (int?)TempData.Peek("UserId") ?? 0;
+            return (username, balance, userId);
+        }
+
+        private (List<string> cards, List<string> backCards) GetCards(int playerCount)
+        {
+            var cards = _cardService.GetRandomCards(playerCount * 2).ToList();
+            var backCards = _cardService.GetRandomBackCards(5).ToList();
+            return (cards, backCards);
+        }
+
+        public IActionResult Game(bool isGameStarted = false)
+        {
+            var model = new GameModel();
+            var (username, balance, userId) = GetUserData();
 
             if (isGameStarted)
             {
-                model.Cards = _cardService.GetRandomCards(2).ToList();
-                model.BackCards = _cardService.GetRandomBackCards(5).ToList();
+                var (cards, backCards) = GetCards(2);
+                model.Cards = cards;
+                model.BackCards = backCards;
                 model.Player = new UserModel { Username = username, Balance = balance, Id = userId };
             }
 
             return View(model);
         }
-
-
 
         [HttpPost]
         public IActionResult StartGame(int playerCount)
@@ -44,32 +55,23 @@ namespace Poker.Controllers
                 return RedirectToAction("Game", new { isGameStarted = false });
             }
 
-            var username = TempData.Peek("Username")?.ToString() ?? "Unknown";
-            var balanceString = TempData.Peek("Balance")?.ToString();
-            var balance = double.TryParse(balanceString, out var result) ? result : 1000;
-            var userId = (int?)TempData.Peek("UserId") ?? 0; 
+            var (username, balance, userId) = GetUserData(); 
+            var (cards, backCards) = GetCards(playerCount);
 
             var model = new GameModel
             {
-                Cards = _cardService.GetRandomCards(playerCount * 2).ToList(),
-                BackCards = _cardService.GetRandomBackCards(5).ToList(),
+                Cards = cards,
+                BackCards = backCards,
                 Player = new UserModel
                 {
                     Username = username,
                     Balance = balance,
-                    Id = userId 
+                    Id = userId
                 },
                 PlayerCount = playerCount
             };
+
             return View("Game", model);
-        }
-
-
-
-        public IActionResult Fold()
-        {
-            TempData["Message"] = "Fold action performed!";
-            return RedirectToAction("Game");
         }
     }
 }

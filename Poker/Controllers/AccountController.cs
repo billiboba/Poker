@@ -50,7 +50,6 @@ namespace Poker.Controllers
             return View(model);
         }
 
-
         [HttpPost]
         public IActionResult Login(string Username, string Password)
         {
@@ -70,9 +69,6 @@ namespace Poker.Controllers
             ModelState.AddModelError("", "Неверное имя пользователя или пароль.");
             return View("Register");
         }
-
-
-
 
         private string HashPassword(string password)
         {
